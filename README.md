@@ -1,6 +1,6 @@
 # OctoSender
 
-Windows XP-inspired static Discord webhook sender for GitHub Pages.
+Windows XP-inspired static Discord webhook sender.
 
 ## Features
 
@@ -11,10 +11,6 @@ Windows XP-inspired static Discord webhook sender for GitHub Pages.
 - Single-message sending
 - HTTP 429 rate-limit notice
 - No backend or database
-
-## GitHub Pages
-
-Upload `index.html` to a repository, then enable GitHub Pages from the repository's Pages settings.
 
 ## Background
 
