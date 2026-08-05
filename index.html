@@ -9,17 +9,27 @@
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:"Roboto","Segoe UI","Tahoma",Arial,sans-serif;font-size:12px}
 body{
-  background:url("https://www.wallpapertip.com/wmimgs/23-236846_windows-xp-bliss-4k.jpg") center/cover fixed no-repeat;
+  background:linear-gradient(180deg,#4a90d9 0%,#2d6bb3 50%,#1e4f8a 100%);
   color:#000;
 }
-.desktop{min-height:100vh;padding:40px 20px 60px;display:flex;align-items:flex-start;justify-content:center}
+body:before{
+  content:"";position:fixed;inset:0;
+  background:url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80") center/cover fixed no-repeat;
+  opacity:0.3;pointer-events:none;
+}
+.desktop{min-height:100vh;padding:50px 20px 70px;display:flex;align-items:flex-start;justify-content:center}
 .window{
-  width:min(1100px,100%);
+  width:min(1150px,100%);
   background:#ece9d8;
   border:3px solid #0055e5;
-  border-radius:10px 10px 0 0;
-  box-shadow:6px 8px 25px rgba(0,0,0,.7),inset 0 2px 0 rgba(255,255,255,0.4);
+  border-radius:12px 12px 0 0;
+  box-shadow:8px 10px 30px rgba(0,0,0,.75),inset 0 2px 0 rgba(255,255,255,0.4);
   overflow:hidden;
+  animation:windowOpen 0.4s ease;
+}
+@keyframes windowOpen{
+  from{opacity:0;transform:scale(0.95) translateY(-20px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
 }
 .titlebar{
   height:38px;padding:8px 16px 8px 12px;
@@ -66,46 +76,52 @@ body{
   box-shadow:inset 0 2px 0 rgba(255,255,255,0.95),0 3px 6px rgba(0,0,0,0.15);
 }
 
-.main{padding:20px 18px;background:#ece9d8}
-.layout{display:grid;grid-template-columns:320px minmax(340px,1fr) 280px;gap:16px}
-@media(max-width:950px){.layout{grid-template-columns:1fr 1fr}}
-@media(max-width:650px){.layout{grid-template-columns:1fr}}
+.main{padding:24px 20px;background:#ece9d8}
+.layout{display:grid;grid-template-columns:340px minmax(360px,1fr) 300px;gap:20px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.layout{grid-template-columns:1fr}}
 
 .group{
-  position:relative;margin:0 0 18px;padding:22px 18px 18px;
+  position:relative;margin:0 0 20px;padding:24px 20px 20px;
   border:2px solid #a0a0a0;background:#f8f7f0;
-  box-shadow:inset 2px 2px 4px rgba(255,255,255,0.9),0 3px 6px rgba(0,0,0,0.12);
-  border-radius:6px;
+  box-shadow:inset 2px 2px 6px rgba(255,255,255,0.95),0 4px 8px rgba(0,0,0,0.15);
+  border-radius:8px;
+  transition:box-shadow 0.2s ease;
+}
+.group:hover{
+  box-shadow:inset 2px 2px 6px rgba(255,255,255,0.95),0 6px 12px rgba(0,0,0,0.18);
 }
 .group legend{
-  position:absolute;top:-12px;left:14px;padding:0 10px;
-  background:#f8f7f0;color:#0040a0;font-weight:700;font-size:13px;
+  position:absolute;top:-14px;left:16px;padding:0 12px;
+  background:#f8f7f0;color:#0040a0;font-weight:700;font-size:14px;
   text-shadow:0 1px 0 rgba(255,255,255,0.9);
   font-family:"Roboto",sans-serif;
+  letter-spacing:0.3px;
 }
-.field{margin-bottom:16px}
-label{display:block;margin-bottom:6px;font-weight:600;font-size:12px;color:#333;font-family:"Roboto",sans-serif}
+.field{margin-bottom:18px}
+label{display:block;margin-bottom:8px;font-weight:600;font-size:13px;color:#333;font-family:"Roboto",sans-serif}
 input,textarea,select{
-  width:100%;font:12px "Roboto",Tahoma,Arial,sans-serif;
+  width:100%;font:13px "Roboto",Tahoma,Arial,sans-serif;
   border:2px solid #7f7f7f;border-top-color:#ccc;border-left-color:#ccc;
-  background:#fff;padding:10px 14px;border-radius:4px;outline:none;
-  box-shadow:inset 0 2px 4px rgba(0,0,0,0.1);
-  transition:all 0.15s ease;
+  background:#fff;padding:12px 16px;border-radius:5px;outline:none;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
+  transition:all 0.2s ease;
 }
 input:focus,textarea:focus,select:focus{
   outline:2px solid #3c7dc4;
   outline-offset:-2px;
   background:#fff;
-  box-shadow:0 0 0 3px rgba(60,125,196,0.35),inset 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow:0 0 0 4px rgba(60,125,196,0.35),inset 0 2px 6px rgba(0,0,0,0.12);
   border-color:#3c7dc4;
+  transform:translateY(-1px);
 }
-textarea{height:200px;resize:vertical;line-height:1.5;font-family:"Roboto",sans-serif}
-.small{font-size:11px;color:#666;line-height:1.5;font-family:"Roboto",sans-serif}
-.small #spamWarning{font-size:10px;font-weight:700}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.check{display:flex;align-items:center;gap:8px;margin:10px 0;font-weight:400;font-size:12px;font-family:"Roboto",sans-serif}
-.check input{width:auto;cursor:pointer;width:18px;height:18px}
-.buttons{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+textarea{height:220px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-serif}
+.small{font-size:12px;color:#666;line-height:1.6;font-family:"Roboto",sans-serif}
+.small #spamWarning{font-size:11px;font-weight:700}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{display:flex;align-items:center;gap:10px;margin:12px 0;font-weight:400;font-size:13px;font-family:"Roboto",sans-serif}
+.check input{width:auto;cursor:pointer;width:20px;height:20px}
+.buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:16px}
 .history-btn{
   padding:6px 14px;
   background:linear-gradient(180deg,#fff 0%,#e8e8e0 100%);
@@ -120,25 +136,25 @@ textarea{height:200px;resize:vertical;line-height:1.5;font-family:"Roboto",sans-
   box-shadow:inset 0 2px 0 rgba(255,255,255,0.9),0 3px 6px rgba(0,0,0,0.15);
 }
 .xpbutton{
-  min-width:100px;padding:8px 20px;
+  min-width:110px;padding:10px 24px;
   background:linear-gradient(180deg,#fff 0%,#e8e8e0 100%);
   border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  border-radius:5px;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,0.9),0 3px 6px rgba(0,0,0,0.18);
-  font:12px "Roboto",Tahoma;cursor:pointer;font-weight:600;
-  transition:all 0.15s ease;
+  border-radius:6px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,0.95),0 4px 8px rgba(0,0,0,0.2);
+  font:13px "Roboto",Tahoma;cursor:pointer;font-weight:600;
+  transition:all 0.2s ease;
 }
 .xpbutton:hover{
   background:linear-gradient(180deg,#f8f8f8 0%,#e0e0d8 100%);
   border-color:#666;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,0.95),0 4px 8px rgba(0,0,0,0.22);
-  transform:translateY(-1px);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,0.98),0 6px 12px rgba(0,0,0,0.25);
+  transform:translateY(-2px);
 }
 .xpbutton:active{
   background:linear-gradient(180deg,#e0e0d8 0%,#d0d0c8 100%);
   border-color:#444;
-  box-shadow:inset 0 3px 6px rgba(0,0,0,0.2);
-  transform:translateY(1px);
+  box-shadow:inset 0 4px 8px rgba(0,0,0,0.25);
+  transform:translateY(0);
 }
 .xpbutton.primary{
   font-weight:700;
@@ -148,65 +164,81 @@ textarea{height:200px;resize:vertical;line-height:1.5;font-family:"Roboto",sans-
 .xpbutton.primary:hover{
   background:linear-gradient(180deg,#f0f8ff 0%,#d0e8ff 100%);
   border-color:#104090;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,0.95),0 4px 8px rgba(32,80,160,0.3);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,0.98),0 6px 12px rgba(32,80,160,0.35);
 }
 .xpbutton:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 .urlbox{font-family:"Roboto Mono","Courier New",monospace;font-size:11px;letter-spacing:0.2px}
 .preview{
   background:#fff;border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  min-height:220px;padding:18px;
-  box-shadow:inset 2px 2px 6px rgba(0,0,0,0.1);
-  border-radius:6px;
+  min-height:240px;padding:20px;
+  box-shadow:inset 2px 2px 8px rgba(0,0,0,0.12);
+  border-radius:8px;
+  transition:box-shadow 0.2s ease;
 }
-.discord-head{display:flex;gap:12px;align-items:flex-start}
+.preview:hover{
+  box-shadow:inset 2px 2px 8px rgba(0,0,0,0.15);
+}
+.discord-head{display:flex;gap:14px;align-items:flex-start}
 .avatar{
-  width:48px;height:48px;border-radius:50%;background:#5865f2;color:#fff;
-  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;
-  overflow:hidden;flex:none;box-shadow:0 3px 8px rgba(0,0,0,0.15);
+  width:52px;height:52px;border-radius:50%;background:#5865f2;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;
+  overflow:hidden;flex:none;box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
-.name{font-weight:700;color:#111;font-size:14px;font-family:"Roboto",sans-serif}
+.name{font-weight:700;color:#111;font-size:15px;font-family:"Roboto",sans-serif}
 .bot{
-  display:inline-block;margin-left:8px;padding:3px 8px;
-  background:#5865f2;color:#fff;font-size:10px;border-radius:4px;font-weight:700;
+  display:inline-block;margin-left:10px;padding:4px 10px;
+  background:#5865f2;color:#fff;font-size:11px;border-radius:5px;font-weight:700;
 }
-.message{margin-top:8px;white-space:pre-wrap;word-break:break-word;line-height:1.6;font-size:13px;font-family:"Roboto",sans-serif}
+.message{margin-top:10px;white-space:pre-wrap;word-break:break-word;line-height:1.7;font-size:14px;font-family:"Roboto",sans-serif}
 .placeholder{color:#999;font-style:italic}
 
 .notice{
-  display:none;margin-bottom:16px;padding:14px 18px;
+  display:none;margin-bottom:20px;padding:16px 20px;
   border:2px solid #c59b00;background:#fff8c9;
-  border-radius:6px;font-size:12px;
+  border-radius:8px;font-size:13px;
   font-family:"Roboto",sans-serif;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  transition:all 0.3s ease;
 }
-.notice.show{display:block}
+.notice.show{display:block;animation:slideIn 0.3s ease}
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(-10px)}
+  to{opacity:1;transform:translateY(0)}
+}
 .notice.error{border-color:#c00;background:#ffe6e6;color:#900}
 .notice.ok{border-color:#390;background:#e6ffe6;color:#060}
 
 .log{
-  min-height:100px;max-height:160px;overflow:auto;
+  min-height:110px;max-height:170px;overflow:auto;
   background:#fff;border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  padding:14px;font-family:"Roboto Mono","Courier New",monospace;font-size:11px;
-  line-height:1.5;box-shadow:inset 2px 2px 6px rgba(0,0,0,0.1);
-  border-radius:6px;
+  padding:16px;font-family:"Roboto Mono","Courier New",monospace;font-size:12px;
+  line-height:1.6;box-shadow:inset 2px 2px 8px rgba(0,0,0,0.12);
+  border-radius:8px;
 }
 .history{
-  max-height:120px;overflow:auto;
+  max-height:130px;overflow:auto;
   background:#fff;border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  padding:14px;font-family:"Roboto Mono","Courier New",monospace;font-size:10px;
-  margin-top:16px;line-height:1.4;
-  box-shadow:inset 2px 2px 6px rgba(0,0,0,0.1);
-  border-radius:6px;
+  padding:16px;font-family:"Roboto Mono","Courier New",monospace;font-size:11px;
+  margin-top:18px;line-height:1.5;
+  box-shadow:inset 2px 2px 8px rgba(0,0,0,0.12);
+  border-radius:8px;
 }
 .history-item{
-  padding:6px;border-bottom:1px dotted #ccc;
+  padding:8px;border-bottom:1px dotted #ccc;
   cursor:pointer;
-  transition:background 0.15s ease;
+  transition:background 0.2s ease;
 }
 .history-item:hover{background:#f5f5f5}
-.history-item.empty{color:#999;font-style:italic;padding:6px}
+.history-item.empty{color:#999;font-style:italic;padding:8px}
+.progress-bar{
+  height:4px;background:#e0e0e0;border-radius:2px;margin-top:8px;overflow:hidden;display:none;
+}
+.progress-fill{
+  height:100%;background:linear-gradient(90deg,#4caf50,#8bc34a);
+  width:0%;transition:width 0.3s ease;
+}
 .statusbar{
   height:32px;display:flex;align-items:center;gap:6px;
   padding:6px 12px;background:#ece9d8;border-top:3px solid #b8b8b8;
@@ -303,6 +335,17 @@ textarea{height:200px;resize:vertical;line-height:1.5;font-family:"Roboto",sans-
               <label>Message Count:</label>
               <input type="number" id="spamCount" min="1" max="100" value="10">
             </div>
+            <div class="field">
+              <label>Delay Between Messages:</label>
+              <select id="spamDelay">
+                <option value="100">100ms (Fast)</option>
+                <option value="250">250ms</option>
+                <option value="500" selected>500ms (Default)</option>
+                <option value="1000">1s</option>
+                <option value="2000">2s</option>
+                <option value="5000">5s</option>
+              </select>
+            </div>
             <div class="small">
               <span id="spamWarning" style="color:#c00;display:none">⚠ Warning: Spamming may result in webhook ban</span>
             </div>
@@ -327,7 +370,10 @@ textarea{height:200px;resize:vertical;line-height:1.5;font-family:"Roboto",sans-
         <fieldset class="group">
           <legend>Activity Log</legend>
           <div id="log" class="log">Ready.</div>
-          <div style="margin-top:10px">
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div style="margin-top:12px">
             <button class="history-btn" id="clearHistory">Clear History</button>
           </div>
           <div id="history" class="history"></div>
@@ -594,6 +640,8 @@ async function send(){
     sendBtn.disabled=true;
     note(`Starting spam mode (${spamType==="rate"?"until rate limit":count+" messages"})...`);
     status.textContent="Spamming...";
+    $("progressBar").style.display="block";
+    $("progressFill").style.width="0%";
 
     for(let i=0;i<count;i++){
       if(spamType==="rate"&&failed>0)break;
@@ -621,7 +669,9 @@ async function send(){
         sent++;
         status.textContent=`Sent ${sent} message${sent===1?"":"s"}...`;
         log.textContent="["+new Date().toLocaleTimeString()+"] Sent message "+(i+1);
-        await new Promise(r=>setTimeout(r,500));
+        const progress=(sent/count)*100;
+        $("progressFill").style.width=progress+"%";
+        await new Promise(r=>setTimeout(r,parseInt($("spamDelay").value)));
       }catch(e){
         failed++;
         log.textContent="["+new Date().toLocaleTimeString()+"] Network error";
@@ -633,6 +683,7 @@ async function send(){
     playSound("success");
     if(sent>0)saveToHistory(content);
     sendBtn.disabled=false;
+    $("progressBar").style.display="none";
   }
 }
 $("sendBtn").onclick=send;
