@@ -81,22 +81,34 @@ body{
 @media(max-width:750px){.layout{grid-template-columns:1fr}}
 
 .group{
-  position:relative;margin:0 0 24px;padding:28px 24px 24px;
-  border:2px solid #a0a0a0;background:#f8f7f0;
+  position:relative;margin:0 0 24px;padding:0;background:#f8f7f0;
+  border:2px solid #a0a0a0;
   box-shadow:inset 2px 2px 8px rgba(255,255,255,1),0 5px 10px rgba(0,0,0,0.18);
   border-radius:10px;
   transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  overflow:hidden;
 }
 .group:hover{
   box-shadow:inset 2px 2px 8px rgba(255,255,255,1),0 8px 16px rgba(0,0,0,0.22);
   transform:translateY(-2px);
 }
-.group legend{
-  position:absolute;top:-16px;left:18px;padding:0 14px;
-  background:#f8f7f0;color:#0040a0;font-weight:700;font-size:15px;
-  text-shadow:0 1px 0 rgba(255,255,255,1);
+.group-header{
+  background:linear-gradient(180deg,#e8e4dc 0%,#d4d0c8 100%);
+  border-bottom:2px solid #a0a0a0;
+  padding:14px 20px;
+  font-weight:700;font-size:15px;
+  color:#0040a0;
   font-family:"Roboto",sans-serif;
   letter-spacing:0.4px;
+  text-shadow:0 1px 0 rgba(255,255,255,1);
+  display:flex;align-items:center;gap:10px;
+}
+.group-header i{
+  width:22px;height:22px;
+  color:#0040a0;
+}
+.group-content{
+  padding:24px 24px 24px;
 }
 .field{margin-bottom:20px}
 label{display:block;margin-bottom:10px;font-weight:600;font-size:14px;color:#333;font-family:"Roboto",sans-serif}
@@ -325,117 +337,147 @@ textarea{height:240px;resize:vertical;line-height:1.7;font-family:"Roboto",sans-
 
     <div class="layout">
       <div>
-        <fieldset class="group">
-          <legend>Webhook Settings</legend>
-          <div class="field">
-            <label for="webhook">Webhook URL:</label>
-            <div style="display:flex;gap:8px">
-              <input id="webhook" class="urlbox" type="text"
-                placeholder="https://discord.com/api/webhooks/123.../token" style="flex:1">
-              <button class="history-btn" id="toggleWebhook" style="flex:0 0 auto" title="Toggle Visibility">
-                <i data-lucide="eye" id="webhookIcon"></i>
-              </button>
+        <div class="group">
+          <div class="group-header">
+            <i data-lucide="webhook"></i>
+            Webhook Settings
+          </div>
+          <div class="group-content">
+            <div class="field">
+              <label for="webhook">Webhook URL:</label>
+              <div style="display:flex;gap:8px">
+                <input id="webhook" class="urlbox" type="text"
+                  placeholder="https://discord.com/api/webhooks/123.../token" style="flex:1">
+                <button class="history-btn" id="toggleWebhook" style="flex:0 0 auto" title="Toggle Visibility">
+                  <i data-lucide="eye" id="webhookIcon"></i>
+                </button>
+              </div>
             </div>
+            <div class="field">
+              <label for="username">Bot Name:</label>
+              <input id="username" maxlength="80" placeholder="Example Bot">
+            </div>
+            <div class="field">
+              <label for="avatarUrl">Avatar URL:</label>
+              <input id="avatarUrl" placeholder="https://example.com/avatar.png">
+            </div>
+            <label class="check"><input id="tts" type="checkbox"> Enable Text-to-Speech</label>
           </div>
-          <div class="field">
-            <label for="username">Bot Name:</label>
-            <input id="username" maxlength="80" placeholder="Example Bot">
-          </div>
-          <div class="field">
-            <label for="avatarUrl">Avatar URL:</label>
-            <input id="avatarUrl" placeholder="https://example.com/avatar.png">
-          </div>
-          <label class="check"><input id="tts" type="checkbox"> Enable Text-to-Speech</label>
-        </fieldset>
+        </div>
 
-        <fieldset class="group">
-          <legend>Delivery Mode</legend>
-          <div class="field">
-            <label>Send Mode:</label>
-            <select id="deliveryMode">
-              <option value="single">Single Message</option>
-              <option value="spam">Spam Mode</option>
-            </select>
+        <div class="group">
+          <div class="group-header">
+            <i data-lucide="send"></i>
+            Delivery Mode
           </div>
-          <div id="spamOptions" style="display:none">
+          <div class="group-content">
             <div class="field">
-              <label>Spam Until:</label>
-              <select id="spamType">
-                <option value="rate">Rate Limit Hit</option>
-                <option value="count">Specific Count</option>
+              <label>Send Mode:</label>
+              <select id="deliveryMode">
+                <option value="single">Single Message</option>
+                <option value="spam">Spam Mode</option>
               </select>
             </div>
-            <div class="field" id="countField" style="display:none">
-              <label>Message Count:</label>
-              <input type="number" id="spamCount" min="1" max="100" value="10">
+            <div id="spamOptions" style="display:none">
+              <div class="field">
+                <label>Spam Until:</label>
+                <select id="spamType">
+                  <option value="rate">Rate Limit Hit</option>
+                  <option value="count">Specific Count</option>
+                </select>
+              </div>
+              <div class="field" id="countField" style="display:none">
+                <label>Message Count:</label>
+                <input type="number" id="spamCount" min="1" max="100" value="10">
+              </div>
+              <div class="field">
+                <label>Delay Between Messages:</label>
+                <select id="spamDelay">
+                  <option value="100">100ms (Fast)</option>
+                  <option value="250">250ms</option>
+                  <option value="500" selected>500ms (Default)</option>
+                  <option value="1000">1s</option>
+                  <option value="2000">2s</option>
+                  <option value="5000">5s</option>
+                </select>
+              </div>
+              <div class="small">
+                <span id="spamWarning" style="color:#c00;display:none">⚠ Warning: Spamming may result in webhook ban</span>
+              </div>
             </div>
-            <div class="field">
-              <label>Delay Between Messages:</label>
-              <select id="spamDelay">
-                <option value="100">100ms (Fast)</option>
-                <option value="250">250ms</option>
-                <option value="500" selected>500ms (Default)</option>
-                <option value="1000">1s</option>
-                <option value="2000">2s</option>
-                <option value="5000">5s</option>
-              </select>
-            </div>
-            <div class="small">
-              <span id="spamWarning" style="color:#c00;display:none">⚠ Warning: Spamming may result in webhook ban</span>
+            <div class="small" id="singleInfo">
+              Sends one message. Stops if rate limited.
             </div>
           </div>
-          <div class="small" id="singleInfo">
-            Sends one message. Stops if rate limited.
-          </div>
-        </fieldset>
+        </div>
       </div>
 
       <div>
-        <fieldset class="group">
-          <legend>Message Content</legend>
-          <textarea id="message" maxlength="2000" placeholder="Type your message here..."></textarea>
-          <div class="small" style="text-align:right;margin-top:4px"><span id="count">0</span> / 2000 characters</div>
-          <div class="buttons">
-            <button class="xpbutton" id="clearBtn">Clear</button>
-            <button class="xpbutton primary" id="sendBtn">Send Message</button>
+        <div class="group">
+          <div class="group-header">
+            <i data-lucide="message-square"></i>
+            Message Content
           </div>
-        </fieldset>
+          <div class="group-content">
+            <textarea id="message" maxlength="2000" placeholder="Type your message here..."></textarea>
+            <div class="small" style="text-align:right;margin-top:4px"><span id="count">0</span> / 2000 characters</div>
+            <div class="buttons">
+              <button class="xpbutton" id="clearBtn">Clear</button>
+              <button class="xpbutton primary" id="sendBtn">Send Message</button>
+            </div>
+          </div>
+        </div>
 
-        <fieldset class="group">
-          <legend>Activity Log</legend>
-          <div id="log" class="log">Ready.</div>
-          <div class="progress-bar" id="progressBar">
-            <div class="progress-fill" id="progressFill"></div>
+        <div class="group">
+          <div class="group-header">
+            <i data-lucide="activity"></i>
+            Activity Log
           </div>
-          <div style="margin-top:12px">
-            <button class="history-btn" id="clearHistory">Clear History</button>
+          <div class="group-content">
+            <div id="log" class="log">Ready.</div>
+            <div class="progress-bar" id="progressBar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div style="margin-top:12px">
+              <button class="history-btn" id="clearHistory">Clear History</button>
+            </div>
+            <div id="history" class="history"></div>
           </div>
-          <div id="history" class="history"></div>
-        </fieldset>
+        </div>
       </div>
 
       <div>
-        <fieldset class="group">
-          <legend>Message Preview</legend>
-          <div class="preview">
-            <div class="discord-head">
-              <div class="avatar" id="avatarPreview">XP</div>
-              <div style="min-width:0">
-                <div class="name" id="namePreview">Example Bot <span class="bot">BOT</span></div>
-                <div id="messagePreview" class="message placeholder">Your message will appear here...</div>
+        <div class="group">
+          <div class="group-header">
+            <i data-lucide="eye"></i>
+            Message Preview
+          </div>
+          <div class="group-content">
+            <div class="preview">
+              <div class="discord-head">
+                <div class="avatar" id="avatarPreview">XP</div>
+                <div style="min-width:0">
+                  <div class="name" id="namePreview">Example Bot <span class="bot">BOT</span></div>
+                  <div id="messagePreview" class="message placeholder">Your message will appear here...</div>
+                </div>
               </div>
             </div>
           </div>
-        </fieldset>
+        </div>
 
-        <fieldset class="group">
-          <legend>Connection Info</legend>
-          <div class="small">
-            <b>Connection:</b> Browser → Discord<br>
-            <b>Storage:</b> LocalStorage only<br>
-            <b>Type:</b> Static client-side app
+        <div class="group">
+          <div class="group-header">
+            <i data-lucide="info"></i>
+            Connection Info
           </div>
-        </fieldset>
+          <div class="group-content">
+            <div class="small">
+              <b>Connection:</b> Browser → Discord<br>
+              <b>Storage:</b> LocalStorage only<br>
+              <b>Type:</b> Static client-side app
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
