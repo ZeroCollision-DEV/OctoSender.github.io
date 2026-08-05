@@ -13,7 +13,7 @@ body{
   background:url("https://static.boredpanda.com/blog/wp-content/uploads/2014/04/microsoft-windows-xp-bliss-wallpaper-charles-orear-1.jpg") center/cover fixed no-repeat;
   color:#000;
 }
-.desktop{min-height:100vh;padding:30px 20px 40px;display:flex;align-items:flex-start;justify-content:center}
+.desktop{min-height:100vh;padding:20px 15px 30px;display:flex;align-items:flex-start;justify-content:center}
 .window{
   width:min(1200px,100%);
   background:#ece9d8;
@@ -29,9 +29,9 @@ body{
   to{opacity:1;transform:scale(1) translateY(0)}
 }
 .titlebar{
-  height:36px;padding:8px 16px 8px 12px;
-  display:flex;align-items:center;gap:14px;
-  color:#fff;font-weight:700;font-size:15px;
+  height:32px;padding:6px 14px 6px 10px;
+  display:flex;align-items:center;gap:12px;
+  color:#fff;font-weight:700;font-size:14px;
   text-shadow:1px 1px 4px rgba(0,0,0,0.7);
   background:linear-gradient(180deg,#8cc0f9 0%,#3575e8 35%,#1a50c8 100%);
   font-family:"Roboto","Segoe UI",sans-serif;
@@ -40,7 +40,7 @@ body{
   box-shadow:inset 0 2px 0 rgba(255,255,255,1);
 }
 .appicon{
-  width:28px;height:28px;border-radius:5px;
+  width:24px;height:24px;border-radius:4px;
   background:#fff;border:2px solid #17408e;
   position:relative;overflow:hidden;
   box-shadow:inset 0 3px 6px rgba(0,0,0,0.3),0 3px 6px rgba(0,0,0,0.25);
@@ -49,22 +49,22 @@ body{
   content:"";position:absolute;background:#f36b21;border-radius:50%;
   box-shadow:0 2px 4px rgba(0,0,0,0.3);
 }
-.appicon:before{width:12px;height:12px;left:3px;top:3px}
-.appicon:after{width:12px;height:12px;right:3px;bottom:3px}
+.appicon:before{width:10px;height:10px;left:2px;top:2px}
+.appicon:after{width:10px;height:10px;right:2px;bottom:2px}
 .title{flex:1}
 .window-controls{display:none}
 
 .toolbar{
-  height:38px;display:flex;align-items:center;gap:6px;
-  padding:6px 16px;background:#f5f4ee;
+  height:32px;display:flex;align-items:center;gap:5px;
+  padding:5px 14px;background:#f5f4ee;
   border-bottom:3px solid #b8b8b8;
   box-shadow:inset 0 2px 0 rgba(255,255,255,1);
 }
 .tool{
-  height:28px;min-width:50px;padding:4px 12px;
+  height:24px;min-width:45px;padding:3px 10px;
   background:linear-gradient(180deg,#fff 0%,#e8e8e0 100%);
   border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  border-radius:5px;font:12px "Roboto",Tahoma;font-weight:500;
+  border-radius:4px;font:11px "Roboto",Tahoma;font-weight:500;
   box-shadow:inset 0 2px 0 rgba(255,255,255,0.95),0 3px 6px rgba(0,0,0,0.12);
   transition:all 0.2s cubic-bezier(0.16,1,0.3,1);
 }
@@ -75,13 +75,13 @@ body{
   transform:translateY(-2px);
 }
 
-.main{padding:20px 18px;background:#ece9d8}
-.layout{display:grid;grid-template-columns:340px minmax(360px,1fr) 300px;gap:20px}
+.main{padding:16px 14px;background:#ece9d8}
+.layout{display:grid;grid-template-columns:320px minmax(340px,1fr) 280px;gap:16px}
 @media(max-width:1050px){.layout{grid-template-columns:1fr 1fr}}
 @media(max-width:750px){.layout{grid-template-columns:1fr}}
 
 .group{
-  position:relative;margin:0 0 18px;padding:0;background:#f8f7f0;
+  position:relative;margin:0 0 14px;padding:0;background:#f8f7f0;
   border:2px solid #a0a0a0;
   box-shadow:inset 2px 2px 8px rgba(255,255,255,1),0 5px 10px rgba(0,0,0,0.18);
   border-radius:10px;
@@ -95,27 +95,27 @@ body{
 .group-header{
   background:linear-gradient(180deg,#e8e4dc 0%,#d4d0c8 100%);
   border-bottom:2px solid #a0a0a0;
-  padding:10px 16px;
-  font-weight:700;font-size:14px;
+  padding:8px 12px;
+  font-weight:700;font-size:13px;
   color:#0040a0;
   font-family:"Roboto",sans-serif;
   letter-spacing:0.4px;
   text-shadow:0 1px 0 rgba(255,255,255,1);
-  display:flex;align-items:center;gap:8px;
+  display:flex;align-items:center;gap:6px;
 }
 .group-header i{
-  width:16px;height:16px;
+  width:14px;height:14px;
   color:#0040a0;
 }
 .group-content{
-  padding:14px 14px 14px;
+  padding:12px 12px 12px;
 }
-.field{margin-bottom:16px}
-label{display:block;margin-bottom:8px;font-weight:600;font-size:13px;color:#333;font-family:"Roboto",sans-serif}
+.field{margin-bottom:12px}
+label{display:block;margin-bottom:6px;font-weight:600;font-size:12px;color:#333;font-family:"Roboto",sans-serif}
 input,textarea,select{
-  width:100%;font:13px "Roboto",Tahoma,Arial,sans-serif;
+  width:100%;font:12px "Roboto",Tahoma,Arial,sans-serif;
   border:2px solid #7f7f7f;border-top-color:#ccc;border-left-color:#ccc;
-  background:#fff;padding:10px 14px;border-radius:6px;outline:none;
+  background:#fff;padding:8px 12px;border-radius:6px;outline:none;
   box-shadow:inset 0 2px 8px rgba(0,0,0,0.15);
   transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
 }
@@ -127,19 +127,19 @@ input:focus,textarea:focus,select:focus{
   border-color:#3c7dc4;
   transform:translateY(-2px);
 }
-textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-serif;font-size:13px}
-.small{font-size:12px;color:#666;line-height:1.6;font-family:"Roboto",sans-serif}
-.small #spamWarning{font-size:11px;font-weight:700}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.check{display:flex;align-items:center;gap:10px;margin:12px 0;font-weight:400;font-size:13px;font-family:"Roboto",sans-serif}
-.check input{width:auto;cursor:pointer;width:20px;height:20px}
-.buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:16px}
+textarea{height:140px;resize:vertical;line-height:1.5;font-family:"Roboto",sans-serif;font-size:12px}
+.small{font-size:11px;color:#666;line-height:1.5;font-family:"Roboto",sans-serif}
+.small #spamWarning{font-size:10px;font-weight:700}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.check{display:flex;align-items:center;gap:8px;margin:10px 0;font-weight:400;font-size:12px;font-family:"Roboto",sans-serif}
+.check input{width:auto;cursor:pointer;width:18px;height:18px}
+.buttons{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
 .history-btn{
-  padding:8px 16px;
+  padding:4px 8px;
   background:linear-gradient(180deg,#fff 0%,#e8e8e0 100%);
   border:2px solid #7f7f7f;border-top-color:#ccc;border-left-color:#ccc;
-  font:12px "Roboto",Tahoma;cursor:pointer;border-radius:5px;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,0.9),0 3px 6px rgba(0,0,0,0.12);
+  font:10px "Roboto",Tahoma;cursor:pointer;border-radius:4px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,0.9),0 2px 4px rgba(0,0,0,0.12);
   font-weight:500;
   min-width:auto;
   transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
@@ -147,32 +147,32 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
 .history-btn:hover{
   background:linear-gradient(180deg,#e0f0ff 0%,#c0e0ff 100%);
   border-color:#4a7cd6;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,0.95),0 4px 8px rgba(0,0,0,0.18);
-  transform:translateY(-2px);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,0.95),0 3px 6px rgba(0,0,0,0.18);
+  transform:translateY(-1px);
 }
 #toggleWebhook{
   font-size:14px;
   padding:8px 12px;
 }
 .xpbutton{
-  min-width:100px;padding:8px 20px;
+  min-width:90px;padding:6px 16px;
   background:linear-gradient(180deg,#fff 0%,#e8e8e0 100%);
   border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  border-radius:6px;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,0.98),0 4px 8px rgba(0,0,0,0.22);
-  font:13px "Roboto",Tahoma;cursor:pointer;font-weight:600;
+  border-radius:5px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,0.98),0 3px 6px rgba(0,0,0,0.22);
+  font:12px "Roboto",Tahoma;cursor:pointer;font-weight:600;
   transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
 }
 .xpbutton:hover{
   background:linear-gradient(180deg,#f8f8f8 0%,#e0e0d8 100%);
   border-color:#666;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,1),0 6px 12px rgba(0,0,0,0.28);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,1),0 5px 10px rgba(0,0,0,0.28);
   transform:translateY(-2px);
 }
 .xpbutton:active{
   background:linear-gradient(180deg,#e0e0d8 0%,#d0d0c8 100%);
   border-color:#444;
-  box-shadow:inset 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow:inset 0 3px 6px rgba(0,0,0,0.3);
   transform:translateY(0);
 }
 .xpbutton.primary{
@@ -183,14 +183,14 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
 .xpbutton.primary:hover{
   background:linear-gradient(180deg,#f0f8ff 0%,#d0e8ff 100%);
   border-color:#104090;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,1),0 6px 12px rgba(32,80,160,0.4);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,1),0 5px 10px rgba(32,80,160,0.4);
 }
 .xpbutton:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 .urlbox{font-family:"Roboto Mono","Courier New",monospace;font-size:11px;letter-spacing:0.2px}
 .preview{
   background:#fff;border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  min-height:200px;padding:18px;
+  min-height:160px;padding:14px;
   box-shadow:inset 2px 2px 10px rgba(0,0,0,0.15);
   border-radius:10px;
   transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
@@ -199,21 +199,21 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
   box-shadow:inset 2px 2px 10px rgba(0,0,0,0.18);
   transform:translateY(-2px);
 }
-.discord-head{display:flex;gap:14px;align-items:flex-start}
+.discord-head{display:flex;gap:12px;align-items:flex-start}
 .avatar{
-  width:48px;height:48px;border-radius:50%;background:#5865f2;color:#fff;
-  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;
-  overflow:hidden;flex:none;box-shadow:0 4px 10px rgba(0,0,0,0.25);
+  width:40px;height:40px;border-radius:50%;background:#5865f2;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;
+  overflow:hidden;flex:none;box-shadow:0 3px 8px rgba(0,0,0,0.25);
   transition:transform 0.3s ease;
 }
 .avatar:hover{transform:scale(1.05)}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.name{font-weight:700;color:#111;font-size:15px;font-family:"Roboto",sans-serif}
+.name{font-weight:700;color:#111;font-size:14px;font-family:"Roboto",sans-serif}
 .bot{
-  display:inline-block;margin-left:10px;padding:4px 10px;
-  background:#5865f2;color:#fff;font-size:11px;border-radius:5px;font-weight:700;
+  display:inline-block;margin-left:8px;padding:3px 8px;
+  background:#5865f2;color:#fff;font-size:10px;border-radius:4px;font-weight:700;
 }
-.message{margin-top:10px;white-space:pre-wrap;word-break:break-word;line-height:1.7;font-size:14px;font-family:"Roboto",sans-serif}
+.message{margin-top:8px;white-space:pre-wrap;word-break:break-word;line-height:1.6;font-size:13px;font-family:"Roboto",sans-serif}
 .placeholder{color:#999;font-style:italic}
 
 .notice{
@@ -233,27 +233,27 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
 .notice.ok{border-color:#390;background:#e6ffe6;color:#060}
 
 .log{
-  min-height:80px;max-height:120px;overflow:auto;
+  min-height:60px;max-height:90px;overflow:auto;
   background:#fff;border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  padding:12px;font-family:"Roboto Mono","Courier New",monospace;font-size:11px;
-  line-height:1.5;box-shadow:inset 2px 2px 10px rgba(0,0,0,0.15);
+  padding:10px;font-family:"Roboto Mono","Courier New",monospace;font-size:10px;
+  line-height:1.4;box-shadow:inset 2px 2px 10px rgba(0,0,0,0.15);
   border-radius:10px;
 }
 .history{
-  max-height:100px;overflow:auto;
+  max-height:80px;overflow:auto;
   background:#fff;border:2px solid #888;border-top-color:#ccc;border-left-color:#ccc;
-  padding:12px;font-family:"Roboto Mono","Courier New",monospace;font-size:10px;
-  margin-top:14px;line-height:1.4;
+  padding:10px;font-family:"Roboto Mono","Courier New",monospace;font-size:9px;
+  margin-top:10px;line-height:1.3;
   box-shadow:inset 2px 2px 10px rgba(0,0,0,0.15);
   border-radius:10px;
 }
 .history-item{
-  padding:6px;border-bottom:1px dotted #ccc;
+  padding:5px;border-bottom:1px dotted #ccc;
   cursor:pointer;
   transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
 }
 .history-item:hover{background:#f5f5f5;transform:translateX(2px)}
-.history-item.empty{color:#999;font-style:italic;padding:6px}
+.history-item.empty{color:#999;font-style:italic;padding:5px}
 .progress-bar{
   height:6px;background:#e0e0e0;border-radius:3px;margin-top:12px;overflow:hidden;display:none;
   box-shadow:inset 0 1px 3px rgba(0,0,0,0.2);
@@ -264,44 +264,44 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
   box-shadow:0 2px 4px rgba(0,0,0,0.2);
 }
 .statusbar{
-  height:30px;display:flex;align-items:center;gap:6px;
-  padding:6px 12px;background:#ece9d8;border-top:3px solid #b8b8b8;
+  height:26px;display:flex;align-items:center;gap:5px;
+  padding:5px 10px;background:#ece9d8;border-top:3px solid #b8b8b8;
   box-shadow:inset 0 2px 0 rgba(255,255,255,1);
 }
 .status{
-  height:22px;padding:6px 16px;
+  height:18px;padding:5px 12px;
   border:2px solid #c2c0b6;border-top-color:#e0e0d8;border-left-color:#e0e0d8;
   background:#f4f2e9;flex:1;
-  font-size:11px;line-height:1.4;
+  font-size:10px;line-height:1.3;
   box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
-  border-radius:6px;
+  border-radius:5px;
   font-family:"Roboto",sans-serif;
 }
 .clock{
-  padding:6px 18px;
+  padding:5px 14px;
   border:2px solid #c2c0b6;border-top-color:#e0e0d8;border-left-color:#e0e0d8;
   background:#f4f2e9;
-  font-size:12px;font-weight:600;
+  font-size:11px;font-weight:600;
   box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
-  border-radius:6px;
+  border-radius:5px;
   font-family:"Roboto",sans-serif;
 }
 .sound-toggle{
-  padding:6px 12px;
+  padding:5px 10px;
   border:2px solid #c2c0b6;border-top-color:#e0e0d8;border-left-color:#e0e0d8;
   background:#f4f2e9;
-  font-size:11px;cursor:pointer;
+  font-size:10px;cursor:pointer;
   box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
-  border-radius:6px;
+  border-radius:5px;
   transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
 }
 .sound-toggle:hover{background:#e8e8e0;transform:translateY(-2px)}
 .sound-toggle i{
-  width:18px;height:18px;
+  width:16px;height:16px;
   color:#333;
 }
 #toggleWebhook i{
-  width:18px;height:18px;
+  width:16px;height:16px;
   color:#333;
 }
 </style>
@@ -319,15 +319,15 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
 
   <div class="toolbar">
     <button class="tool" id="sendToolbar">
-      <i data-lucide="send" style="width:12px;height:12px;margin-right:2px;vertical-align:middle"></i>
+      <i data-lucide="send" style="width:10px;height:10px;margin-right:2px;vertical-align:middle"></i>
       Send
     </button>
     <button class="tool" id="previewToolbar">
-      <i data-lucide="eye" style="width:12px;height:12px;margin-right:2px;vertical-align:middle"></i>
+      <i data-lucide="eye" style="width:10px;height:10px;margin-right:2px;vertical-align:middle"></i>
       Preview
     </button>
     <button class="tool" id="clearToolbar">
-      <i data-lucide="trash-2" style="width:12px;height:12px;margin-right:2px;vertical-align:middle"></i>
+      <i data-lucide="trash-2" style="width:10px;height:10px;margin-right:2px;vertical-align:middle"></i>
       Clear
     </button>
   </div>
@@ -422,15 +422,15 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
           <div class="group-content">
             <div class="field">
               <label>Attachment:</label>
-              <div style="display:flex;gap:8px">
+              <div style="display:flex;gap:6px">
                 <input type="file" id="fileUpload" accept="image/*,.pdf,.txt,.doc,.docx" style="flex:1">
                 <button class="history-btn" id="removeFile" style="display:none">Remove</button>
               </div>
-              <div class="small" id="fileInfo" style="margin-top:4px"></div>
+              <div class="small" id="fileInfo" style="margin-top:3px"></div>
             </div>
             <div class="field">
               <label>Formatting:</label>
-              <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <div style="display:flex;gap:4px;flex-wrap:wrap">
                 <button class="history-btn" data-format="bold" title="Bold: **text**"><b>B</b></button>
                 <button class="history-btn" data-format="italic" title="Italic: *text*"><i>I</i></button>
                 <button class="history-btn" data-format="underline" title="Underline: __text__"><u>U</u></button>
