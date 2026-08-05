@@ -421,6 +421,14 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
           </div>
           <div class="group-content">
             <div class="field">
+              <label>Attachment:</label>
+              <div style="display:flex;gap:8px">
+                <input type="file" id="fileUpload" accept="image/*,.pdf,.txt,.doc,.docx" style="flex:1">
+                <button class="history-btn" id="removeFile" style="display:none">Remove</button>
+              </div>
+              <div class="small" id="fileInfo" style="margin-top:4px"></div>
+            </div>
+            <div class="field">
               <label>Formatting:</label>
               <div style="display:flex;gap:6px;flex-wrap:wrap">
                 <button class="history-btn" data-format="bold"><b>B</b></button>
@@ -571,18 +579,56 @@ $("toggleWebhook").onclick=()=>{
   playSound("click");
 };
 
+let webhookValidationTimeout;
 $("webhook").oninput=()=>{
+  clearTimeout(webhookValidationTimeout);
   const webhook=$("webhook").value.trim();
   if(!webhook){
     $("webhookStatus").textContent="";
     return;
   }
   
-  if(validWebhook(webhook)){
-    $("webhookStatus").innerHTML='<span style="color:#390">✓ Webhook URL is valid</span>';
-  }else{
+  if(!validWebhook(webhook)){
     $("webhookStatus").innerHTML='<span style="color:#c00">Invalid webhook URL format</span>';
+    return;
   }
+  
+  $("webhookStatus").innerHTML='<span style="color:#666">Testing webhook...</span>';
+  
+  webhookValidationTimeout=setTimeout(async()=>{
+    try{
+      const r=await fetch(webhook,{method:"HEAD"});
+      if(r.ok){
+        $("webhookStatus").innerHTML='<span style="color:#390">✓ Webhook is valid and working</span>';
+      }else if(r.status===401){
+        $("webhookStatus").innerHTML='<span style="color:#c00">Webhook invalid (401 Unauthorized)</span>';
+      }else if(r.status===404){
+        $("webhookStatus").innerHTML='<span style="color:#c00">Webhook not found (404)</span>';
+      }else{
+        $("webhookStatus").innerHTML='<span style="color:#c00">Webhook error: HTTP '+r.status+'</span>';
+      }
+    }catch(e){
+      $("webhookStatus").innerHTML='<span style="color:#c00">Connection failed</span>';
+    }
+  },800);
+};
+
+let uploadedFile=null;
+$("fileUpload").onchange=(e)=>{
+  const file=e.target.files[0];
+  if(file){
+    uploadedFile=file;
+    $("fileInfo").textContent=`Selected: ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+    $("removeFile").style.display="block";
+    playSound("click");
+  }
+};
+$("removeFile").onclick=()=>{
+  uploadedFile=null;
+  $("fileUpload").value="";
+  $("fileInfo").textContent="";
+  $("removeFile").style.display="none";
+  playSound("click");
 };
 
 document.querySelectorAll('[data-format]').forEach(btn=>{
@@ -733,7 +779,55 @@ async function send(){
   const mode=$("deliveryMode").value;
   const username=$("username").value.trim(), avatar=$("avatarUrl").value.trim();
 
+  if(uploadedFile){
+    const formData=new FormData();
+    formData.append("file",uploadedFile);
+    if(content.trim())formData.append("content",content);
+    formData.append("tts",$("tts").checked);
+    if(username)formData.append("username",username);
+    if(avatar)formData.append("avatar_url",avatar);
 
+    sendBtn.disabled=true; status.textContent="Sending...";
+    note("Sending message...");
+
+    try{
+      const r=await fetch(webhook,{
+        method:"POST",
+        body:formData
+      });
+
+      if(r.status===429){
+        const text="Rate limit hit. Please wait before sending again.";
+        note(text,"error");
+        status.textContent="Rate limited.";
+        log.textContent="["+new Date().toLocaleTimeString()+"] "+text;
+        playSound("error");
+        return;
+      }
+      if(!r.ok){
+        note("Discord returned HTTP "+r.status+". Check the webhook URL.","error");
+        status.textContent="Send failed.";
+        log.textContent="HTTP "+r.status;
+        playSound("error");
+        return;
+      }
+      note("Message sent successfully.","ok");
+      status.textContent="Message sent.";
+      log.textContent="["+new Date().toLocaleTimeString()+"] Message sent successfully.";
+      playSound("success");
+      saveToHistory(content);
+      uploadedFile=null;
+      $("fileUpload").value="";
+      $("fileInfo").textContent="";
+      $("removeFile").style.display="none";
+    }catch(e){
+      note("The request could not be completed. A browser/network restriction may be blocking the request.","error");
+      status.textContent="Connection error.";
+      log.textContent=e.message||"Network error";
+      playSound("error");
+    }finally{sendBtn.disabled=false}
+    return;
+  }
 
   const payload={content,tts:$("tts").checked};
   if(username)payload.username=username;
@@ -827,6 +921,10 @@ async function send(){
     status.textContent="Complete.";
     playSound("success");
     if(sent>0)saveToHistory(content);
+    uploadedFile=null;
+    $("fileUpload").value="";
+    $("fileInfo").textContent="";
+    $("removeFile").style.display="none";
     sendBtn.disabled=false;
     $("progressBar").style.display="none";
   }
