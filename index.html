@@ -352,6 +352,7 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
                   <i data-lucide="eye" id="webhookIcon"></i>
                 </button>
               </div>
+              <div class="small" id="webhookStatus" style="margin-top:4px"></div>
             </div>
             <div class="field">
               <label for="username">Bot Name:</label>
@@ -419,6 +420,16 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
             Message Content
           </div>
           <div class="group-content">
+            <div class="field">
+              <label>Formatting:</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="history-btn" data-format="bold"><b>B</b></button>
+                <button class="history-btn" data-format="italic"><i>I</i></button>
+                <button class="history-btn" data-format="underline"><u>U</u></button>
+                <button class="history-btn" data-format="code">Code</button>
+                <button class="history-btn" data-format="strike">Strikethrough</button>
+              </div>
+            </div>
             <textarea id="message" maxlength="2000" placeholder="Type your message here..."></textarea>
             <div class="small" style="text-align:right;margin-top:4px"><span id="count">0</span> / 2000 characters</div>
             <div class="buttons">
@@ -559,6 +570,45 @@ $("toggleWebhook").onclick=()=>{
   lucide.createIcons();
   playSound("click");
 };
+
+$("webhook").oninput=()=>{
+  const webhook=$("webhook").value.trim();
+  if(!webhook){
+    $("webhookStatus").textContent="";
+    return;
+  }
+  
+  if(validWebhook(webhook)){
+    $("webhookStatus").innerHTML='<span style="color:#390">✓ Webhook URL is valid</span>';
+  }else{
+    $("webhookStatus").innerHTML='<span style="color:#c00">Invalid webhook URL format</span>';
+  }
+};
+
+document.querySelectorAll('[data-format]').forEach(btn=>{
+  btn.onclick=()=>{
+    const format=btn.getAttribute('data-format');
+    const textarea=$("message");
+    const start=textarea.selectionStart;
+    const end=textarea.selectionEnd;
+    const selectedText=textarea.value.substring(start,end);
+    let formattedText="";
+    
+    switch(format){
+      case "bold":formattedText=`**${selectedText}**`;break;
+      case "italic":formattedText=`*${selectedText}*`;break;
+      case "underline":formattedText=`__${selectedText}__`;break;
+      case "code":formattedText=`\`${selectedText}\``;break;
+      case "strike":formattedText=`~~${selectedText}~~`;break;
+    }
+    
+    textarea.value=textarea.value.substring(0,start)+formattedText+textarea.value.substring(end);
+    textarea.focus();
+    textarea.setSelectionRange(start+formattedText.length,start+formattedText.length);
+    preview();
+    playSound("click");
+  };
+});
 $("webhook").type="text";
 
 document.querySelectorAll("button,input,select").forEach(el=>{
@@ -676,13 +726,16 @@ async function send(){
   if(!validWebhook(webhook)){
     note("Enter a valid Discord webhook URL from a webhook you control.","error"); return;
   }
-  if(!content.trim()){
-    note("Enter a message first.","error"); return;
+  if(!content.trim()&&!uploadedFile){
+    note("Enter a message or upload a file first.","error"); return;
   }
 
   const mode=$("deliveryMode").value;
-  const payload={content,tts:$("tts").checked};
   const username=$("username").value.trim(), avatar=$("avatarUrl").value.trim();
+
+
+
+  const payload={content,tts:$("tts").checked};
   if(username)payload.username=username;
   if(avatar)payload.avatar_url=avatar;
 
