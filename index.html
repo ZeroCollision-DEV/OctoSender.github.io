@@ -431,11 +431,18 @@ textarea{height:180px;resize:vertical;line-height:1.6;font-family:"Roboto",sans-
             <div class="field">
               <label>Formatting:</label>
               <div style="display:flex;gap:6px;flex-wrap:wrap">
-                <button class="history-btn" data-format="bold"><b>B</b></button>
-                <button class="history-btn" data-format="italic"><i>I</i></button>
-                <button class="history-btn" data-format="underline"><u>U</u></button>
-                <button class="history-btn" data-format="code">Code</button>
-                <button class="history-btn" data-format="strike">Strikethrough</button>
+                <button class="history-btn" data-format="bold" title="Bold: **text**"><b>B</b></button>
+                <button class="history-btn" data-format="italic" title="Italic: *text*"><i>I</i></button>
+                <button class="history-btn" data-format="underline" title="Underline: __text__"><u>U</u></button>
+                <button class="history-btn" data-format="strike" title="Strikethrough: ~~text~~"><s>S</s></button>
+                <button class="history-btn" data-format="code" title="Code: `text`">Code</button>
+                <button class="history-btn" data-format="codeblock" title="Code Block: ```text```">Block</button>
+                <button class="history-btn" data-format="spoiler" title="Spoiler: ||text||">Spoiler</button>
+                <button class="history-btn" data-format="quote" title="Quote: > text">Quote</button>
+                <button class="history-btn" data-format="list" title="List: - text">List</button>
+                <button class="history-btn" data-format="header1" title="Header 1: # text">H1</button>
+                <button class="history-btn" data-format="header2" title="Header 2: ## text">H2</button>
+                <button class="history-btn" data-format="header3" title="Header 3: ### text">H3</button>
               </div>
             </div>
             <textarea id="message" maxlength="2000" placeholder="Type your message here..."></textarea>
@@ -638,19 +645,33 @@ document.querySelectorAll('[data-format]').forEach(btn=>{
     const start=textarea.selectionStart;
     const end=textarea.selectionEnd;
     const selectedText=textarea.value.substring(start,end);
+    const textToFormat=selectedText||textarea.value;
     let formattedText="";
     
     switch(format){
-      case "bold":formattedText=`**${selectedText}**`;break;
-      case "italic":formattedText=`*${selectedText}*`;break;
-      case "underline":formattedText=`__${selectedText}__`;break;
-      case "code":formattedText=`\`${selectedText}\``;break;
-      case "strike":formattedText=`~~${selectedText}~~`;break;
+      case "bold":formattedText=`**${textToFormat}**`;break;
+      case "italic":formattedText=`*${textToFormat}*`;break;
+      case "underline":formattedText=`__${textToFormat}__`;break;
+      case "strike":formattedText=`~~${textToFormat}~~`;break;
+      case "code":formattedText=`\`${textToFormat}\``;break;
+      case "codeblock":formattedText=`\`\`\`${textToFormat}\`\`\``;break;
+      case "spoiler":formattedText=`||${textToFormat}||`;break;
+      case "quote":formattedText=`> ${textToFormat}`;break;
+      case "list":formattedText=`- ${textToFormat}`;break;
+      case "header1":formattedText=`# ${textToFormat}`;break;
+      case "header2":formattedText=`## ${textToFormat}`;break;
+      case "header3":formattedText=`### ${textToFormat}`;break;
     }
     
-    textarea.value=textarea.value.substring(0,start)+formattedText+textarea.value.substring(end);
-    textarea.focus();
-    textarea.setSelectionRange(start+formattedText.length,start+formattedText.length);
+    if(selectedText){
+      textarea.value=textarea.value.substring(0,start)+formattedText+textarea.value.substring(end);
+      textarea.focus();
+      textarea.setSelectionRange(start+formattedText.length,start+formattedText.length);
+    }else{
+      textarea.value=formattedText;
+      textarea.focus();
+      textarea.setSelectionRange(formattedText.length,formattedText.length);
+    }
     preview();
     playSound("click");
   };
