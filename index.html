@@ -719,7 +719,7 @@ async function send(){
         sent++;
         status.textContent=`Sent ${sent} message${sent===1?"":"s"}...`;
         log.textContent="["+new Date().toLocaleTimeString()+"] Sent message "+(i+1);
-        const progress=(sent/count)*100;
+        const progress=spamType==="count"?((sent/count)*100):((sent/999)*100);
         $("progressFill").style.width=progress+"%";
         await new Promise(r=>setTimeout(r,parseInt($("spamDelay").value)));
       }catch(e){
