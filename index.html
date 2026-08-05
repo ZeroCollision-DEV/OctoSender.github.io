@@ -81,6 +81,7 @@ input,textarea,select{
 input:focus,textarea:focus,select:focus{outline:1px dotted #000;outline-offset:-3px}
 textarea{height:165px;resize:vertical}
 .small{font-size:10px;color:#555}
+.small #spamWarning{font-size:9px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .check{display:flex;align-items:center;gap:5px;margin:6px 0;font-weight:normal}
 .check input{width:auto}
@@ -213,7 +214,30 @@ textarea{height:165px;resize:vertical}
 
         <fieldset class="group">
           <legend>Delivery</legend>
-          <div class="small">
+          <div class="field">
+            <label>Mode:</label>
+            <select id="deliveryMode">
+              <option value="single">Single message</option>
+              <option value="spam">Spam</option>
+            </select>
+          </div>
+          <div id="spamOptions" style="display:none">
+            <div class="field">
+              <label>Spam Type:</label>
+              <select id="spamType">
+                <option value="rate">Until rate limit</option>
+                <option value="count">Specific amount</option>
+              </select>
+            </div>
+            <div class="field" id="countField" style="display:none">
+              <label>Amount:</label>
+              <input type="number" id="spamCount" min="1" max="100" value="10">
+            </div>
+            <div class="small">
+              <span id="spamWarning" style="color:#c00;display:none">⚠ Spamming may get your webhook banned</span>
+            </div>
+          </div>
+          <div class="small" id="singleInfo">
             Single message mode. Stops on rate limit.
           </div>
         </fieldset>
@@ -323,6 +347,17 @@ $("clearHistory").onclick=()=>{
 };
 loadHistory();
 
+$("deliveryMode").onchange=()=>{
+  const mode=$("deliveryMode").value;
+  $("spamOptions").style.display=mode==="spam"?"block":"none";
+  $("singleInfo").style.display=mode==="single"?"block":"none";
+  $("spamWarning").style.display=mode==="spam"?"inline":"none";
+};
+$("spamType").onchange=()=>{
+  const type=$("spamType").value;
+  $("countField").style.display=type==="count"?"block":"none";
+};
+
 function note(text,type=""){
   notice.textContent=text;
   notice.className="notice show "+type;
@@ -378,45 +413,94 @@ async function send(){
     note("Enter a message first.","error"); return;
   }
 
-  sendBtn.disabled=true; status.textContent="Sending...";
-  note("Sending message...");
+  const mode=$("deliveryMode").value;
   const payload={content,tts:$("tts").checked};
   const username=$("username").value.trim(), avatar=$("avatarUrl").value.trim();
   if(username)payload.username=username;
   if(avatar)payload.avatar_url=avatar;
 
-  try{
-    const r=await fetch(webhook,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(payload)
-    });
+  if(mode==="single"){
+    sendBtn.disabled=true; status.textContent="Sending...";
+    note("Sending message...");
 
-    if(r.status===429){
-      let retry=Number(r.headers.get("Retry-After")||0);
-      if(retry>100)retry=Math.ceil(retry/1000); else retry=Math.ceil(retry);
+    try{
+      const r=await fetch(webhook,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(payload)
+      });
+
+      if(r.status===429){
+        let retry=Number(r.headers.get("Retry-After")||0);
+        if(retry>100)retry=Math.ceil(retry/1000); else retry=Math.ceil(retry);
+        try{
+          const d=await r.json();
+          if(d.retry_after)retry=Math.ceil(Number(d.retry_after));
+        }catch{}
+        const text=retry?
+          `Discord rate limit is active. Wait about ${retry} second${retry===1?"":"s"} before sending again.`:
+          "Discord rate limit is active. Please wait before sending again.";
+        note(text,"error");status.textContent="Rate limited.";log.textContent=text;return;
+      }
+      if(!r.ok){
+        note("Discord returned HTTP "+r.status+". Check the webhook URL.","error");
+        status.textContent="Send failed.";log.textContent="HTTP "+r.status;return;
+      }
+      note("Message sent successfully.","ok");
+      status.textContent="Message sent.";
+      log.textContent="["+new Date().toLocaleTimeString()+"] Message sent successfully.";
+      saveToHistory(content);
+    }catch(e){
+      note("The request could not be completed. A browser/network restriction may be blocking the request.","error");
+      status.textContent="Connection error.";
+      log.textContent=e.message||"Network error";
+    }finally{sendBtn.disabled=false}
+  }else{
+    const spamType=$("spamType").value;
+    let count=spamType==="count"?parseInt($("spamCount").value)||10:999;
+    let sent=0,failed=0;
+
+    sendBtn.disabled=true;
+    note(`Starting spam mode (${spamType==="rate"?"until rate limit":count+" messages"})...`);
+    status.textContent="Spamming...";
+
+    for(let i=0;i<count;i++){
+      if(spamType==="rate"&&failed>0)break;
+
       try{
-        const d=await r.json();
-        if(d.retry_after)retry=Math.ceil(Number(d.retry_after));
-      }catch{}
-      const text=retry?
-        `Discord rate limit is active. Wait about ${retry} second${retry===1?"":"s"} before sending again.`:
-        "Discord rate limit is active. Please wait before sending again.";
-      note(text,"error");status.textContent="Rate limited.";log.textContent=text;return;
+        const r=await fetch(webhook,{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify(payload)
+        });
+
+        if(r.status===429){
+          const text="Rate limit hit. Stopping spam.";
+          note(text,"error");
+          status.textContent="Rate limited.";
+          log.textContent="["+new Date().toLocaleTimeString()+"] "+text;
+          break;
+        }
+        if(!r.ok){
+          failed++;
+          log.textContent="["+new Date().toLocaleTimeString()+"] HTTP "+r.status;
+          continue;
+        }
+        sent++;
+        status.textContent=`Sent ${sent} message${sent===1?"":"s"}...`;
+        log.textContent="["+new Date().toLocaleTimeString()+"] Sent message "+(i+1);
+        await new Promise(r=>setTimeout(r,500));
+      }catch(e){
+        failed++;
+        log.textContent="["+new Date().toLocaleTimeString()+"] Network error";
+      }
     }
-    if(!r.ok){
-      note("Discord returned HTTP "+r.status+". Check the webhook URL.","error");
-      status.textContent="Send failed.";log.textContent="HTTP "+r.status;return;
-    }
-    note("Message sent successfully.","ok");
-    status.textContent="Message sent.";
-    log.textContent="["+new Date().toLocaleTimeString()+"] Message sent successfully.";
-    saveToHistory(content);
-  }catch(e){
-    note("The request could not be completed. A browser/network restriction may be blocking the request.","error");
-    status.textContent="Connection error.";
-    log.textContent=e.message||"Network error";
-  }finally{sendBtn.disabled=false}
+
+    note(`Spam complete. Sent: ${sent}, Failed: ${failed}`,"ok");
+    status.textContent="Done.";
+    if(sent>0)saveToHistory(content);
+    sendBtn.disabled=false;
+  }
 }
 $("sendBtn").onclick=send;
 preview();
